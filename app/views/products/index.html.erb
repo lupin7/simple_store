@@ -1,0 +1,48 @@
+<h1>Listing products</h1>
+
+<% 100.times do %>
+  <p>Chunky Bacon!</p>
+<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Stock quantity</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <% all_price = 0 %>
+  <% product_count = 0 %>
+  <% @products.each do |product| %>
+    <% all_price += product.price %>
+    <% product_count += product.stock_quantity %>
+  <% end %>
+  <% ave = all_price / @products.count %>
+
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= product.title %></td>
+        <td><%= product.description %></td>
+        <td><%= product.price %></td>
+        <td><%= product.stock_quantity %></td>
+        <td><%= link_to 'Show', product %></td>
+        <td><%= link_to 'Edit', edit_product_path(product) %></td>
+        <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+  <% product_sorted = @products.sort_by do |pr| 
+      pr[:price]
+    end %>
+
+  <p> Average: <%= number_to_currency(ave) %> </p>
+  <p> Total number of unique products: <%= @products.count %></p>
+  <p> Stock quantity of all products: <%= product_count %></p>
+  
+<br>
+
+<%= link_to 'New Product', new_product_path %>
